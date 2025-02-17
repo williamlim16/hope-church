@@ -7,7 +7,8 @@ This project is using onion/clean architecture which consist of 3 layers:
 
 ## Folder structure
 Based on the architecture that we use, we are going to structure the folder with a certain naming convention
-.
+
+```
 +-- server
 |   +-- services
 |       +-- life_group_service.ts
@@ -15,6 +16,7 @@ Based on the architecture that we use, we are going to structure the folder with
 |       +-- life_group_repository.ts
 +-- actions
 |   +-- life_group_actions.ts
+```
 
 
 # Technologies
