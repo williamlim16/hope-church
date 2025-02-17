@@ -23,3 +23,5 @@ Based on the architecture that we use, we are going to structure the folder with
 - Next.js for the main framework
 - Better auth for authentication
 - Shadcn for ui library
+- Conform for form validation
+- Convex for database
