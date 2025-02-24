@@ -1,11 +1,22 @@
 # Architecture
 This project is using onion/clean architecture which consist of 3 layers: 
-- Repository: fetch data from data source(database, api)
+- Repository
 - Services: use repository to get the data and apply business logic
 - Actions: handles next js specific functions and handles the form validation
 - Representation(UI): display the data into the UI
 
-## Folder structure
+For complete example, life group entity will be our standard.
+
+## Repository
+Fetch data from data source(database, api). In our case, we will use the template that drizzle ORM has provided and the types that they have provided.
+
+## Services
+We apply business logic here including interaction with additional services (S3, logging, and other)
+
+## Actions
+We apply Next js specific functions such as caching and form validation.
+
+# Folder structure
 Based on the architecture that we use, we are going to structure the folder with a certain naming convention
 
 ```
@@ -24,4 +35,3 @@ Based on the architecture that we use, we are going to structure the folder with
 - Better auth for authentication
 - Shadcn for ui library
 - Conform for form validation
-- Convex for database
