@@ -18,4 +18,13 @@ export function LayoutHeader({ children, addUrl }: { children: React.ReactNode, 
   )
 }
 
+export function LayoutContent({ children }: { children: React.ReactNode }) {
+
+  return (
+    <>
+      {children}
+    </>
+  )
+}
+
 
