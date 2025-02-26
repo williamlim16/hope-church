@@ -11,3 +11,4 @@ export const lifeGroupTable = pgTable('life_group', {
 
 export type InsertLifeGroup = typeof lifeGroupTable.$inferInsert;
 export type SelectLifeGroup = typeof lifeGroupTable.$inferSelect;
+export type NullishLifeGroup = SelectLifeGroup | null;
