@@ -1,13 +1,12 @@
-import { FormContainer, FormInput } from "@/components/form/form-input"
+import { AddEditForm } from "@/components/form/life-group-form"
 import { Layout, LayoutHeader } from "@/components/layout/admin-add-edit-layout"
-import { Button } from "@/components/ui/button"
 import { type NullishLifeGroup } from "@/db/schema/life-group"
 import { lifeGroupById } from "@/server/services/life-group-service"
 
 export default async function Page({ params }: { params: Promise<{ slug: string | undefined }> }) {
 
   const parameters = await params
-  let lifeGroup: NullishLifeGroup
+  let lifeGroup: NullishLifeGroup = undefined
 
   if (parameters?.slug && parseInt(parameters.slug)) {
     const lifeGroupId = parameters.slug
@@ -19,23 +18,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       <LayoutHeader>
         {lifeGroup ? "Editting Life Group" : "Adding Life Group"}
       </LayoutHeader>
-
-      <form>
-        <FormContainer>
-          <FormInput
-            label="Life group name"
-            description="Name for your life group"
-            errors={undefined} />
-
-          <FormInput
-            label="Voucher"
-            description="Voucher for life group members to sign up"
-            errors={undefined} />
-
-          <Button type="submit" className="col-start-3">Cancel</Button>
-          <Button type="submit" className="col-start-4">Submit</Button>
-        </FormContainer>
-      </form>
+      <AddEditForm lifeGroup={undefined} />
     </Layout>
   )
 }
