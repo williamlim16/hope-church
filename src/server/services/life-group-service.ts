@@ -1,9 +1,13 @@
 "use server"
 
-import { createLifeGroup, deleteLifeGroup, getLifeGroups, updateLifeGroup } from "../repository/life-group-repository"
+import { createLifeGroup, deleteLifeGroup, getLifeGroupById, getLifeGroups, updateLifeGroup } from "../repository/life-group-repository"
 
 export async function lifeGroupList() {
   return await getLifeGroups()
+}
+
+export async function lifeGroupById(id: string) {
+  return await getLifeGroupById(id)
 }
 
 export async function lifeGroupCreate({ name, voucher }: { name: string, voucher: string }) {
