@@ -5,6 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { type SelectLifeGroup } from "@/db/schema"
 import { type ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 
 export const columns: ColumnDef<SelectLifeGroup>[] = [
   {
@@ -57,7 +58,11 @@ export const columns: ColumnDef<SelectLifeGroup>[] = [
               Copy Voucher
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <Link href={`/admin/life-group/${lifeGroup.id}`}>
+              <DropdownMenuItem>
+                Edit
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

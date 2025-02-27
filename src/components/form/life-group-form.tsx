@@ -9,6 +9,7 @@ import { useForm, type SubmissionResult } from "@conform-to/react"
 import { parseWithZod } from "@conform-to/zod"
 import { type NullishLifeGroup } from "@/db/schema"
 import Link from "next/link"
+import { Input } from "../ui/input"
 
 type Props = {
   lifeGroup: NullishLifeGroup
@@ -30,6 +31,10 @@ export function AddEditForm({ lifeGroup = undefined }: Props) {
 
   const [form, fields] = useForm({
     lastResult,
+    defaultValue: {
+      name: lifeGroup?.name,
+      voucher: lifeGroup?.voucher
+    },
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: lifeGroup ? editSchema : addSchema })
     },
@@ -38,8 +43,9 @@ export function AddEditForm({ lifeGroup = undefined }: Props) {
   })
 
   return (
-    <form action={action} onSubmit={form.onSubmit} noValidate id={form.id}>
-      {JSON.stringify(lifeGroup)}
+    <form action={action}
+      onSubmit={form.onSubmit}
+      noValidate id={form.id}>
       <FormContainer>
         <FormInput
           label="Life group name"
@@ -62,6 +68,9 @@ export function AddEditForm({ lifeGroup = undefined }: Props) {
             name: fields.voucher.name
           }}
         />
+        {lifeGroup ?
+          <Input type="hidden" value={lifeGroup.id} name="lifeGroupId" /> : null
+        }
 
         <Link href="/admin/life-group" className="col-start-3 w-full">
           <Button className="w-full">Cancel</Button>

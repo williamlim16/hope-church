@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const parameters = await params
   let lifeGroup: NullishLifeGroup = undefined
 
-  if (parameters?.slug && parseInt(parameters.slug)) {
+  if (parameters?.slug) {
     const lifeGroupId = parameters.slug
     lifeGroup = await lifeGroupById(lifeGroupId)
   }
@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   return (
     <Layout>
       <LayoutHeader>
-        {lifeGroup ? "Editting Life Group" : "Adding Life Group"}
+        {lifeGroup ? "Edit Life Group" : "Add Life Group"}
       </LayoutHeader>
       <AddEditForm lifeGroup={lifeGroup ?? lifeGroup} />
     </Layout>
