@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  return <div className="flex p-5">{children}</div>;
+  return <div className="flex p-5 flex-col gap-9">{children}</div>;
 };
 
 export function LayoutHeader({ children, addUrl }: { children: React.ReactNode, addUrl: string }) {
