@@ -4,7 +4,7 @@ export const lifeGroupTable = pgTable('life_group', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
   voucher: text('voucher').notNull(),
-  updated_at: timestamp(),
+  updated_at: timestamp().$onUpdate(() => new Date()),
   created_at: timestamp().defaultNow().notNull(),
 });
 

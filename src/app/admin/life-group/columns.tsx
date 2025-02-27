@@ -29,11 +29,11 @@ export const columns: ColumnDef<SelectLifeGroup>[] = [
     accessorKey: "updated_at",
     header: "Updated At",
     cell: ({ row }) => {
-      const created = row.getValue("updated_at")
-      if (!created) {
+      const updated = row.getValue("updated_at")
+      if (!updated) {
         return
       }
-      const date = new Date(created as Date)
+      const date = new Date(updated as Date)
       return date.toLocaleString("en-US", { timeZone: "Australia/Sydney", day: "numeric", month: "long", year: "numeric" })
     }
   },
