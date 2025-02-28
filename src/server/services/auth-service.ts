@@ -12,7 +12,7 @@ export async function signUpUser({ name, email, password, voucher }: { name: str
 
   const user = await auth.api.signUpEmail({
     body: {
-      name: email, email, password
+      name, email, password
     }
   })
 
