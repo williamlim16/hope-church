@@ -3,7 +3,7 @@
 import { type SubmissionResult } from "@conform-to/react";
 import { z } from "zod";
 import { parseWithZod } from "@conform-to/zod"
-import { lifeGroupCreate, lifeGroupUpdate } from "@/server/services/life-group-service";
+import { lifeGroupCreate, lifeGroupDelete, lifeGroupUpdate } from "@/server/services/life-group-service";
 
 export async function addEditLifeGroup(prevState: SubmissionResult, formData: FormData) {
   const schema = z.object({
@@ -29,5 +29,18 @@ export async function addEditLifeGroup(prevState: SubmissionResult, formData: Fo
     await lifeGroupCreate({ name, voucher });
   }
   return submission.reply();
+}
 
+export async function deleteLifeGroup(formData: FormData) {
+  const schema = z.object({
+    lifeGroupId: z.string()
+  })
+
+  const submission = parseWithZod(formData, { schema })
+
+  if (submission.status !== "success") {
+    return
+  }
+
+  await lifeGroupDelete(submission.value.lifeGroupId)
 }

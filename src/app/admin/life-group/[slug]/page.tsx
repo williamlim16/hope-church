@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const parameters = await params
   let lifeGroup: NullishLifeGroup = undefined
 
-  if (parameters?.slug) {
+  if (parameters?.slug && parameters.slug !== "add") {
     const lifeGroupId = parameters.slug
     lifeGroup = await lifeGroupById(lifeGroupId)
   }
