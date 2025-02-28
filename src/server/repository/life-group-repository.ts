@@ -24,3 +24,10 @@ export async function updateLifeGroup(id: SelectLifeGroup['id'], data: Partial<O
 export async function deleteLifeGroup(id: SelectLifeGroup['id']) {
   await db.delete(lifeGroupTable).where(eq(lifeGroupTable.id, id))
 }
+
+export async function getLifeGroupByVoucher(voucher: string) {
+  const lifeGroup = await db.query.lifeGroupTable.findFirst({
+    where: eq(lifeGroupTable.voucher, voucher)
+  })
+  return lifeGroup?.id
+}

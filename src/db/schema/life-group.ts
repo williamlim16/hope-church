@@ -1,4 +1,6 @@
+import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import { user } from "./auth";
 
 export const lifeGroupTable = pgTable('life_group', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -8,6 +10,9 @@ export const lifeGroupTable = pgTable('life_group', {
   created_at: timestamp().defaultNow().notNull(),
 });
 
+export const lifeGroupRelations = relations(user, ({ many }) => ({
+  user: many(user)
+}))
 
 export type InsertLifeGroup = typeof lifeGroupTable.$inferInsert;
 export type SelectLifeGroup = typeof lifeGroupTable.$inferSelect;
