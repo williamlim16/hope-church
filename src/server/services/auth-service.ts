@@ -22,3 +22,17 @@ export async function signUpUser({ name, email, password, voucher }: { name: str
   await updateUserLifeGroup(user.user.id, lifeGroupId)
 
 }
+
+export async function signInUser({ email, password }: { email: string, password: string }) {
+
+  const user = await auth.api.signInEmail({
+    body: {
+      email, password
+    }
+  })
+
+  if (!user) {
+    throw Error("Something went wrong when logging in ")
+  }
+
+}
