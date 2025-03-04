@@ -1,7 +1,8 @@
+"use server"
 import { auth } from "@/server/lib/auth"
 import { getLifeGroupByVoucher } from "../repository/life-group-repository"
 import { updateUserLifeGroup } from "../repository/user-repository"
-import { APIError } from "better-auth"
+import { APIError } from "better-auth/api"
 
 export async function signUpUser({ name, email, password, voucher }: { name: string, email: string, password: string, voucher: string }) {
 
