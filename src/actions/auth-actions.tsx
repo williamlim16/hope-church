@@ -22,7 +22,6 @@ export async function registerUser(prevState: SubmissionResult, formData: FormDa
   }
   const { name, email, password, voucher } = submission.value
 
-
   await signUpUser({ name, email, password, voucher })
   return submission.reply()
 }
