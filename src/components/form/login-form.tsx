@@ -1,6 +1,6 @@
 "use client"
 
-import { loginUser, registerUser } from "@/actions/auth-actions"
+import { loginUser } from "@/actions/auth-actions"
 import { Button } from "../ui/button"
 import { CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -12,14 +12,16 @@ import { parseWithZod } from "@conform-to/zod"
 import { z } from "zod"
 import Link from "next/link"
 import { authClient } from "@/lib/auth-client"
+import { useRouter } from "next/router"
 
 export default function LoginForm() {
+
   const schema = z.object({
     email: z.string({ message: "Email is required" }),
     password: z.string({ message: "Password is required" }),
   })
 
-  const [lastResult, action] = useActionState<SubmissionResult, FormData>(loginUser, {})
+  const [lastResult, action, isPending] = useActionState<SubmissionResult, FormData>(loginUser, {})
 
   const [form, fields] = useForm({
     lastResult,
@@ -30,12 +32,6 @@ export default function LoginForm() {
     shouldRevalidate: 'onInput'
 
   })
-  const {
-    data: session,
-    isPending, //loading state 
-    error, //error object 
-    refetch //refetch the session
-  } = authClient.useSession()
 
   return (
     <form
@@ -45,7 +41,6 @@ export default function LoginForm() {
       id={form.id}
     >
       <CardContent className="space-y-4">
-        {JSON.stringify(session)}
         <FormInput
           label="Email"
           description="Enter your preferred email"
@@ -62,7 +57,7 @@ export default function LoginForm() {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col">
-        <Button className="w-full h-12 text-base" type="submit">
+        <Button className="w-full h-12 text-base" type="submit" loading={isPending}>
           Login
         </Button>
         <p className="mt-4 text-center text-sm text-muted-foreground">

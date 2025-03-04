@@ -1,6 +1,7 @@
 import { auth } from "@/server/lib/auth"
 import { getLifeGroupByVoucher } from "../repository/life-group-repository"
 import { updateUserLifeGroup } from "../repository/user-repository"
+import { APIError } from "better-auth"
 
 export async function signUpUser({ name, email, password, voucher }: { name: string, email: string, password: string, voucher: string }) {
 
@@ -10,16 +11,22 @@ export async function signUpUser({ name, email, password, voucher }: { name: str
     throw Error("Life group voucher is invalid")
   }
 
-  const user = await auth.api.signUpEmail({
-    body: {
-      name, email, password
-    }
-  })
+  try {
+    const user = await auth.api.signUpEmail({
+      body: {
+        name, email, password
+      }
+    })
 
-  if (!user) {
-    throw Error("Something went wrong when creating the user")
+    if (!user) {
+      throw Error("Something went wrong when creating the user")
+    }
+    await updateUserLifeGroup(user.user.id, lifeGroupId)
+  } catch (error) {
+    if (error instanceof APIError) {
+      console.log(error.message, error.status)
+    }
   }
-  await updateUserLifeGroup(user.user.id, lifeGroupId)
 
 }
 

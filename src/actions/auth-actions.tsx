@@ -4,6 +4,7 @@ import { z } from "zod"
 import { type SubmissionResult } from "@conform-to/react"
 import { parseWithZod } from "@conform-to/zod"
 import { signInUser, signUpUser } from "@/server/services/auth-service"
+import { redirect } from "next/navigation"
 
 export async function registerUser(prevState: SubmissionResult, formData: FormData) {
 
@@ -20,6 +21,7 @@ export async function registerUser(prevState: SubmissionResult, formData: FormDa
     return submission.reply()
   }
   const { name, email, password, voucher } = submission.value
+
 
   await signUpUser({ name, email, password, voucher })
   return submission.reply()
@@ -39,7 +41,6 @@ export async function loginUser(prevState: SubmissionResult, formData: FormData)
   }
   const { email, password } = submission.value
   await signInUser({ email, password })
-
-  return submission.reply()
+  redirect("/home")
 }
 
