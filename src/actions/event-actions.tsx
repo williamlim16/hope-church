@@ -46,4 +46,5 @@ export async function deleteEventAction(formData: FormData) {
   }
 
   await eventDelete(submission.value.eventId)
+  redirect(`/admin/event`)
 }
