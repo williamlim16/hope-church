@@ -30,6 +30,7 @@ export async function addEditEventAction(prevState: SubmissionResult, formData: 
     redirect(`/admin/event/${eventId}`)
   } else {
     await eventCreate({ name, description, event_date });
+    redirect(`/admin/event/`)
   }
 
 }
