@@ -4,6 +4,7 @@ import { type SubmissionResult } from "@conform-to/react";
 import { z } from "zod";
 import { parseWithZod } from "@conform-to/zod"
 import { lifeGroupCreate, lifeGroupDelete, lifeGroupUpdate } from "@/server/services/life-group-service";
+import { redirect } from "next/navigation";
 
 export async function addEditLifeGroup(prevState: SubmissionResult, formData: FormData) {
   const schema = z.object({
@@ -25,6 +26,7 @@ export async function addEditLifeGroup(prevState: SubmissionResult, formData: Fo
 
   if (lifeGroupId) {
     await lifeGroupUpdate({ id: lifeGroupId, name, voucher });
+    redirect(`/admin/life-group/${lifeGroupId}`)
   } else {
     await lifeGroupCreate({ name, voucher });
   }
@@ -43,4 +45,5 @@ export async function deleteLifeGroup(formData: FormData) {
   }
 
   await lifeGroupDelete(submission.value.lifeGroupId)
+  redirect(`/admin/life-group`)
 }
