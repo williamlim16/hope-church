@@ -78,7 +78,7 @@ export function AddEditForm({ event = undefined }: Props) {
           description="When the event is going to happen"
           errors={fields.event_date.errors}
           inputProps={{
-            defaultValue: fields.event_date.initialValue,
+            defaultValue: fields.event_date.initialValue?.split('.')[0],
             id: fields.event_date.id,
             name: fields.event_date.name,
           }}
@@ -88,7 +88,7 @@ export function AddEditForm({ event = undefined }: Props) {
           <Input type="hidden" value={event.id} name="eventId" /> : null
         }
 
-        <Link href="/admin/life-group" className="col-start-3 w-full">
+        <Link href="/admin/event" className="col-start-3 w-full">
           <Button className="w-full">Cancel</Button>
         </Link>
         <Button type="submit" className="col-start-4">Submit</Button>

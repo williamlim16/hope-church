@@ -4,6 +4,7 @@ import { type SubmissionResult } from "@conform-to/react";
 import { z } from "zod";
 import { parseWithZod } from "@conform-to/zod"
 import { eventCreate, eventDelete, eventUpdate } from "@/server/services/event-service";
+import { redirect } from "next/navigation";
 
 export async function addEditEventAction(prevState: SubmissionResult, formData: FormData) {
   const schema = z.object({
@@ -26,10 +27,11 @@ export async function addEditEventAction(prevState: SubmissionResult, formData: 
 
   if (eventId) {
     await eventUpdate({ id: eventId, name, description, event_date });
+    redirect(`/admin/event/${eventId}`)
   } else {
     await eventCreate({ name, description, event_date });
   }
-  return submission.reply();
+
 }
 
 export async function deleteEventAction(formData: FormData) {

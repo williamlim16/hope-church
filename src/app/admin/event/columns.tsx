@@ -3,6 +3,9 @@
 import { type SelectEvent } from "@/db/schema"
 import { type ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Pencil } from "lucide-react";
 
 export const columns: ColumnDef<SelectEvent>[] = [
   {
@@ -43,7 +46,21 @@ export const columns: ColumnDef<SelectEvent>[] = [
         )
       }
     }
-  },
+  }, {
+    id: "actions",
+    cell: ({ row }) => {
+      const event = row.original
+      return (
+        <div className="flex gap-3">
+          <Link href={`/admin/event/${event.id}`}>
+            <Button variant="ghost" size="sm">
+              <Pencil />
+            </Button>
+          </Link>
+        </div>
+      )
+    }
+  }
 ]
 
 
