@@ -29,8 +29,8 @@ export async function addEditLifeGroup(prevState: SubmissionResult, formData: Fo
     redirect(`/admin/life-group/${lifeGroupId}`)
   } else {
     await lifeGroupCreate({ name, voucher });
+    redirect(`/admin/life-group`)
   }
-  return submission.reply();
 }
 
 export async function deleteLifeGroup(formData: FormData) {
