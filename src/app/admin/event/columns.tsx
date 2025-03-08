@@ -35,7 +35,7 @@ export const columns: ColumnDef<SelectEvent>[] = [
       const event = row.original
       if (event.status === "draft") {
         return (
-          <Badge>Draft</Badge>
+          <Badge variant={"draft"}>Draft</Badge>
         )
       } else {
         return (
