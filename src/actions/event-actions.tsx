@@ -3,7 +3,7 @@
 import { type SubmissionResult } from "@conform-to/react";
 import { z } from "zod";
 import { parseWithZod } from "@conform-to/zod"
-import { eventCreate, eventDelete, eventUpdate } from "@/server/services/event-service";
+import { eventCreate, eventDelete, eventPublish, eventUpdate } from "@/server/services/event-service";
 import { redirect } from "next/navigation";
 
 export async function addEditEventAction(prevState: SubmissionResult, formData: FormData) {
@@ -12,10 +12,17 @@ export async function addEditEventAction(prevState: SubmissionResult, formData: 
     name: z.string().min(1, "Name is required"),
     description: z.string().min(1, "Description is required"),
     event_date: z.date(),
+    publish: z.string().optional(),
   }).refine((data) => data.eventId ?? (data.name && data.description, data.event_date), {
     message: "All fields are required for creation",
     path: ["name", "description", "event_date"],
   });
+
+  const publishEventId = formData.get("publish") as string
+  if (publishEventId) {
+    await eventPublish({ eventId: publishEventId })
+    redirect(`/admin/event/${publishEventId}/view`)
+  }
 
   const submission = parseWithZod(formData, { schema });
 
@@ -23,7 +30,12 @@ export async function addEditEventAction(prevState: SubmissionResult, formData: 
     return submission.reply();
   }
 
-  const { eventId, name, description, event_date } = submission.value;
+  const { eventId, name, description, event_date, publish } = submission.value;
+
+  if (publish && eventId) {
+    await eventPublish({ eventId })
+    redirect(`/admin/event/${eventId}`)
+  }
 
   if (eventId) {
     await eventUpdate({ id: eventId, name, description, event_date });

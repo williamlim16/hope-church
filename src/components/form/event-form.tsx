@@ -13,9 +13,10 @@ import { addEditEventAction } from "@/actions/event-actions"
 
 type Props = {
   event: NullishEvent
+  view: boolean
 }
 
-export function AddEditForm({ event = undefined }: Props) {
+export function AddEditForm({ event = undefined, view = false }: Props) {
 
   const addSchema = z.object({
     name: z.string({ message: "Name is required" }),
@@ -58,7 +59,8 @@ export function AddEditForm({ event = undefined }: Props) {
           inputProps={{
             defaultValue: fields.name.initialValue,
             id: fields.name.id,
-            name: fields.name.name
+            name: fields.name.name,
+            disabled: view
           }}
         />
 
@@ -69,7 +71,8 @@ export function AddEditForm({ event = undefined }: Props) {
           inputProps={{
             defaultValue: fields.description.initialValue,
             id: fields.description.id,
-            name: fields.description.name
+            name: fields.description.name,
+            disabled: view
           }}
         />
 
@@ -81,6 +84,7 @@ export function AddEditForm({ event = undefined }: Props) {
             defaultValue: fields.event_date.initialValue?.split('.')[0],
             id: fields.event_date.id,
             name: fields.event_date.name,
+            disabled: view
           }}
         />
 
@@ -88,12 +92,26 @@ export function AddEditForm({ event = undefined }: Props) {
           <Input type="hidden" value={event.id} name="eventId" /> : null
         }
 
-        <Link href="/admin/event" className="col-start-3 w-full">
-          <Button className="w-full">Cancel</Button>
-        </Link>
-        <Button type="submit" className="col-start-4">Submit</Button>
+        <div className="col-start-4 flex gap-3 justify-end">
+          <Link href="/admin/event">
+            <Button variant="outline">Cancel </Button>
+          </Link>
+          {!view ?
+            <Button type="submit" >Submit</Button> : null
+          }
+          {view && event ?
+            <Link href={`/admin/event/${event.id}`}>
+              <Button variant="outline">Edit </Button>
+            </Link> : null
+          }
+          {view && event ?
+            <div>
+              <Input type="hidden" name="publish" value={event.id} />
+              <Button type="submit" variant="publish">Publish</Button>
+            </div> : null
+          }
+        </div>
       </FormContainer>
     </form>
-
   )
 }

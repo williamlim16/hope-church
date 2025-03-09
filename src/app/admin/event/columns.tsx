@@ -5,7 +5,7 @@ import { type ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -60,6 +60,12 @@ export const columns: ColumnDef<SelectEvent>[] = [
           <Link href={`/admin/event/${event.id}`}>
             <Button variant="ghost" size="sm">
               <Pencil />
+            </Button>
+          </Link>
+
+          <Link href={`/admin/event/${event.id}/view`}>
+            <Button variant="ghost" size="sm">
+              <Eye />
             </Button>
           </Link>
 

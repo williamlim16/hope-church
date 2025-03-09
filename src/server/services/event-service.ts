@@ -1,6 +1,6 @@
 "use server"
 
-import { createEvent, deleteEvent, getEventById, getEvents, updateEvent } from "../repository/event-repository"
+import { createEvent, deleteEvent, getEventById, getEvents, publishEvent, updateEvent } from "../repository/event-repository"
 
 export async function eventList() {
   return await getEvents()
@@ -26,6 +26,10 @@ export async function eventUpdate({ id, name, description, event_date }: { id: s
 
 export async function eventDelete(id: string) {
   await deleteEvent(id)
+}
+
+export async function eventPublish({ eventId }: { eventId: string }) {
+  await publishEvent(eventId)
 }
 
 

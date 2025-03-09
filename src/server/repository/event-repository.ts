@@ -27,3 +27,9 @@ export async function deleteEvent(id: SelectLifeGroup['id']) {
   await db.delete(eventTable).where(eq(eventTable.id, id))
 }
 
+export async function publishEvent(id: SelectLifeGroup['id']) {
+  await db.update(eventTable).set({
+    status: "published"
+  }).where(eq(eventTable.id, id))
+}
+
