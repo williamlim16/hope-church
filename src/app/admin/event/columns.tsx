@@ -57,11 +57,13 @@ export const columns: ColumnDef<SelectEvent>[] = [
       const event = row.original
       return (
         <div className="flex gap-3">
-          <Link href={`/admin/event/${event.id}`}>
-            <Button variant="ghost" size="sm">
-              <Pencil />
-            </Button>
-          </Link>
+          {event.status !== "published" &&
+            <Link href={`/admin/event/${event.id}`}>
+              <Button variant="ghost" size="sm">
+                <Pencil />
+              </Button>
+            </Link>
+          }
 
           <Link href={`/admin/event/${event.id}/view`}>
             <Button variant="ghost" size="sm">
