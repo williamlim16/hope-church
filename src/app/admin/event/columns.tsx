@@ -47,7 +47,7 @@ export const columns: ColumnDef<SelectEvent>[] = [
         )
       } else {
         return (
-          <Badge>Published</Badge>
+          <Badge variant={"published"}>Published</Badge>
         )
       }
     }
