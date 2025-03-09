@@ -10,6 +10,7 @@ import { type NullishEvent } from "@/db/schema"
 import Link from "next/link"
 import { Input } from "../ui/input"
 import { addEditEventAction } from "@/actions/event-actions"
+import { useFormStatus } from "react-dom"
 
 type Props = {
   event: NullishEvent
@@ -17,6 +18,8 @@ type Props = {
 }
 
 export function AddEditForm({ event = undefined, view = false }: Props) {
+
+  const { pending } = useFormStatus()
 
   const addSchema = z.object({
     name: z.string({ message: "Name is required" }),
@@ -97,7 +100,7 @@ export function AddEditForm({ event = undefined, view = false }: Props) {
             <Button variant="outline">Cancel </Button>
           </Link>
           {!view ?
-            <Button type="submit" >Submit</Button> : null
+            <Button type="submit" disabled={pending} >Submit</Button> : null
           }
           {view && event ?
             <Link href={`/admin/event/${event.id}`}>
@@ -107,7 +110,7 @@ export function AddEditForm({ event = undefined, view = false }: Props) {
           {view && event ?
             <div>
               <Input type="hidden" name="publish" value={event.id} />
-              <Button type="submit" variant="publish">Publish</Button>
+              <Button type="submit" variant="publish" disabled={pending}>Publish</Button>
             </div> : null
           }
         </div>
