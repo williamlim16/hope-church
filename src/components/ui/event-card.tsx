@@ -2,6 +2,7 @@ import { type SelectEvent } from "@/db/schema";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import { Button } from "./button";
+import Link from "next/link";
 
 type EventCardProps = {
   event: SelectEvent
@@ -30,7 +31,9 @@ export function EventCard({ event }: EventCardProps) {
         <p className="line-clamp-2 text-sm">{event.description}</p>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button className="w-full">View Details</Button>
+        <Link href={`/event/${event.id}`} className="w-full">
+          <Button className="w-full">View Details</Button>
+        </Link>
       </CardFooter>
     </Card>
   )
