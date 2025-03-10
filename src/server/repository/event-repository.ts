@@ -33,3 +33,10 @@ export async function publishEvent(id: SelectLifeGroup['id']) {
   }).where(eq(eventTable.id, id))
 }
 
+export async function getPublishedEvents(): Promise<Array<SelectEvent>> {
+  return db.query.eventTable.findMany({
+    where: eq(eventTable.status, "published")
+  })
+}
+
+
