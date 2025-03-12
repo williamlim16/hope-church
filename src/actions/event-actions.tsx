@@ -55,9 +55,24 @@ export async function deleteEventAction(formData: FormData) {
   const submission = parseWithZod(formData, { schema })
 
   if (submission.status !== "success") {
-    return
+    throw new Error("Invalid event ID")
   }
 
   await eventDelete(submission.value.eventId)
   redirect(`/admin/event`)
+}
+
+export async function registerEventAction(formData: FormData) {
+  const schema = z.object({
+    eventId: z.string(),
+    userId: z.string()
+  })
+
+  const submission = parseWithZod(formData, { schema })
+
+  if (submission.status !== "success") {
+    throw new Error("Invalid event or user")
+  }
+  const { userId, eventId } = submission.value
+
 }

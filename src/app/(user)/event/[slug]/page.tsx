@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { type NullishEvent } from "@/db/schema";
+import { Input } from "@/components/ui/input";
+import { auth } from "@/server/lib/auth";
 import { eventById } from "@/server/services/event-service";
-import { ArrowLeft, Calendar, MapPin, Tag, User } from "lucide-react";
+import { ArrowLeft, Calendar } from "lucide-react";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -14,6 +16,12 @@ export default async function EventDetailView({ params }: { params: Promise<{ sl
 
   if (!event) {
     redirect('/home')
+  }
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+  if (!session) {
+    redirect('/login')
   }
 
   return (
@@ -78,9 +86,13 @@ export default async function EventDetailView({ params }: { params: Promise<{ sl
 
         {/* Sticky Register Button */}
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t max-w-[430px] mx-auto">
-          <Button className="w-full" size="lg">
-            Register Now
-          </Button>
+          <form className="w-full">
+            <Input type="hidden" name="eventId" value={event.id} />
+            <Input type="hidden" name="userId" value={session.user.id} />
+            <Button className="w-full" size="lg" type="submit">
+              Register Now
+            </Button>
+          </form>
         </div>
       </div>
     </div>
