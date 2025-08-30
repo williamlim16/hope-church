@@ -1,39 +1,85 @@
-"use server"
+"use server";
 
-import { createEvent, deleteEvent, getEventById, getEvents, getPublishedEvents, publishEvent, updateEvent } from "../repository/event-repository"
+import { type SelectEvent, type SelectUser } from "@/db/schema";
+import {
+  createEvent,
+  deleteEvent,
+  getEventById,
+  getEvents,
+  getPublishedEvents,
+  publishEvent,
+  registerUserToEvent,
+  updateEvent,
+} from "../repository/event-repository";
 
 export async function eventList() {
-  return await getEvents()
+  return await getEvents();
 }
 
 export async function eventById(id: string) {
-  return await getEventById(id)
+  return await getEventById(id);
 }
 
-export async function eventCreate({ name, description, event_date }: { name: string, description: string, event_date: Date }) {
+export async function eventCreate({
+  name,
+  description,
+  event_date,
+}: {
+  name: string;
+  description: string;
+  event_date: Date;
+}) {
   await createEvent({
     name,
     description,
-    event_date
-  })
+    event_date,
+  });
 }
 
-export async function eventUpdate({ id, name, description, event_date }: { id: string, name: string | undefined, description: string | undefined, event_date: Date | undefined }) {
+export async function eventUpdate({
+  id,
+  name,
+  description,
+  event_date,
+}: {
+  id: string;
+  name: string | undefined;
+  description: string | undefined;
+  event_date: Date | undefined;
+}) {
   await updateEvent(id, {
-    name, description, event_date
-  })
+    name,
+    description,
+    event_date,
+  });
 }
 
 export async function eventDelete(id: string) {
-  await deleteEvent(id)
+  await deleteEvent(id);
 }
 
 export async function eventPublish({ eventId }: { eventId: string }) {
-  await publishEvent(eventId)
+  await publishEvent(eventId);
 }
 
 export async function eventPublishedList() {
-  return await getPublishedEvents()
+  return await getPublishedEvents();
 }
 
-
+export async function attendEvent(
+  eventId: SelectEvent["id"],
+  userId: SelectUser["id"],
+  location: string,
+  driving: boolean,
+) {
+  try {
+    await registerUserToEvent({
+      eventId,
+      userId,
+      location,
+      driving,
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
