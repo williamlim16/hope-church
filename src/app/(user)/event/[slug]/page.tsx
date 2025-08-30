@@ -89,6 +89,8 @@ export default async function EventDetailView({ params }: { params: Promise<{ sl
           <form className="w-full">
             <Input type="hidden" name="eventId" value={event.id} />
             <Input type="hidden" name="userId" value={session.user.id} />
+            <Input type="hidden" name="driving" value={session.user.id} />
+            <Input type="hidden" name="location" value={session.user.id} />
             <Button className="w-full" size="lg" type="submit">
               Register Now
             </Button>

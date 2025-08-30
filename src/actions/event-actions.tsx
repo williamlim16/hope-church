@@ -66,6 +66,7 @@ export async function registerEventAction(formData: FormData) {
   const schema = z.object({
     eventId: z.string(),
     userId: z.string()
+
   })
 
   const submission = parseWithZod(formData, { schema })
