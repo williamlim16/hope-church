@@ -1,46 +1,74 @@
-"use server"
-import { auth } from "@/server/lib/auth"
-import { getLifeGroupByVoucher } from "../repository/life-group-repository"
-import { updateUserLifeGroup } from "../repository/user-repository"
-import { APIError } from "better-auth/api"
+"use server";
+import { auth } from "@/server/lib/auth";
+import { getLifeGroupByVoucher } from "../repository/life-group-repository";
+import { updateUserLifeGroup } from "../repository/user-repository";
+import { APIError } from "better-auth/api";
 
-export async function signUpUser({ name, email, password, voucher }: { name: string, email: string, password: string, voucher: string }) {
-
-  const lifeGroupId = await getLifeGroupByVoucher(voucher)
+export async function signUpUser({
+  name,
+  email,
+  password,
+  voucher,
+}: {
+  name: string;
+  email: string;
+  password: string;
+  voucher: string;
+}) {
+  const lifeGroupId = await getLifeGroupByVoucher(voucher);
 
   if (!lifeGroupId) {
-    throw Error("Life group voucher is invalid")
+    return {
+      success: false,
+      message: "Life group voucher is invalid",
+    };
   }
 
   try {
     const user = await auth.api.signUpEmail({
       body: {
-        name, email, password
-      }
-    })
+        name,
+        email,
+        password,
+      },
+    });
 
     if (!user) {
-      throw Error("Something went wrong when creating the user")
+      return {
+        success: false,
+        message: "Something went wrong when creating the user",
+      };
     }
-    await updateUserLifeGroup(user.user.id, lifeGroupId)
+    await updateUserLifeGroup(user.user.id, lifeGroupId);
   } catch (error) {
     if (error instanceof APIError) {
-      console.log(error.message, error.status)
+      console.error(error.message, error.status);
+      return {
+        success: false,
+        message: error.message,
+      };
     }
   }
-
 }
 
-export async function signInUser({ email, password }: { email: string, password: string }) {
-
+export async function signInUser({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) {
   const user = await auth.api.signInEmail({
     body: {
-      email, password
-    }
-  })
+      email,
+      password,
+    },
+  });
 
   if (!user) {
-    throw Error("Something went wrong when logging in ")
+    return {
+      success: false,
+      message: "Something went wrong when logging in",
+    };
   }
-
 }
