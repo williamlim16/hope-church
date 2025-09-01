@@ -1,6 +1,9 @@
 "use server";
 import { auth } from "@/server/lib/auth";
-import { getLifeGroupByVoucher } from "../repository/life-group-repository";
+import {
+  getLifeGroupByVoucher,
+  LifeGroupRepository,
+} from "../repository/life-group-repository";
 import { updateUserLifeGroup } from "../repository/user-repository";
 import { APIError } from "better-auth/api";
 
@@ -15,7 +18,8 @@ export async function signUpUser({
   password: string;
   voucher: string;
 }) {
-  const lifeGroupId = await getLifeGroupByVoucher(voucher);
+  const lifeGroupRepository = new LifeGroupRepository();
+  const lifeGroupId = await lifeGroupRepository.findByVoucher(voucher);
 
   if (!lifeGroupId) {
     return {

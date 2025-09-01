@@ -1,30 +1,46 @@
-"use server"
-
-import { createLifeGroup, deleteLifeGroup, getLifeGroupById, getLifeGroups, updateLifeGroup } from "../repository/life-group-repository"
+import { LifeGroupRepository } from "../repository/life-group-repository";
 
 export async function lifeGroupList() {
-  return await getLifeGroups()
+  const lifeGroupRepository = new LifeGroupRepository();
+  return await lifeGroupRepository.findMany({});
 }
 
 export async function lifeGroupById(id: string) {
-  return await getLifeGroupById(id)
+  const lifeGroupRepository = new LifeGroupRepository();
+  return await lifeGroupRepository.findById(id);
 }
 
-export async function lifeGroupCreate({ name, voucher }: { name: string, voucher: string }) {
-  await createLifeGroup({
+export async function lifeGroupCreate({
+  name,
+  voucher,
+}: {
+  name: string;
+  voucher: string;
+}) {
+  const lifeGroupRepository = new LifeGroupRepository();
+  await lifeGroupRepository.save({
     name,
-    voucher
-  })
+    voucher,
+  });
 }
 
-export async function lifeGroupUpdate({ id, name, voucher }: { id: string, name: string | undefined, voucher: string | undefined }) {
-  await updateLifeGroup(id, {
-    name, voucher
-  })
+export async function lifeGroupUpdate({
+  id,
+  name,
+  voucher,
+}: {
+  id: string;
+  name: string | undefined;
+  voucher: string | undefined;
+}) {
+  const lifeGroupRepository = new LifeGroupRepository();
+  await lifeGroupRepository.update(id, {
+    name,
+    voucher,
+  });
 }
 
 export async function lifeGroupDelete(id: string) {
-  await deleteLifeGroup(id)
+  const lifeGroupRepository = new LifeGroupRepository();
+  await lifeGroupRepository.delete(id);
 }
-
-
