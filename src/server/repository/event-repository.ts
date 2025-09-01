@@ -1,4 +1,3 @@
-"use server";
 import { db } from "@/db";
 import {
   eventTable,
@@ -6,49 +5,53 @@ import {
   type InsertEvent,
   type SelectEvent,
 } from "@/db/schema";
-import { type SelectLifeGroup } from "@/db/schema/life-group";
-import { eq } from "drizzle-orm";
+import { and, eq, like } from "drizzle-orm";
+import { type IBaseRepository } from "./interface";
 
-export async function createEvent(data: InsertEvent) {
-  await db.insert(eventTable).values(data);
-}
+export class EventRepository
+  implements IBaseRepository<SelectEvent, InsertEvent>
+{
+  async save(data: InsertEvent): Promise<void> {
+    await db.insert(eventTable).values(data);
+  }
+  async findMany({
+    page = 1,
+    limit = 10,
+    search,
+    status,
+  }: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    status?: SelectEvent["status"];
+  }): Promise<Array<SelectEvent>> {
+    const offset = (page - 1) * limit;
 
-export async function getEvents(): Promise<Array<SelectEvent>> {
-  return db.query.eventTable.findMany();
-}
+    return db.query.eventTable.findMany({
+      where: and(
+        search ? like(eventTable.name, `%${search}%`) : undefined,
+        status ? eq(eventTable.status, status) : undefined,
+      ),
+      limit: limit,
+      offset: offset,
+    });
+  }
 
-export async function getEventById(
-  id: SelectEvent["id"],
-): Promise<SelectEvent | undefined> {
-  return db.query.eventTable.findFirst({
-    where: eq(eventTable.id, id),
-  });
-}
+  async findById(id: SelectEvent["id"]): Promise<SelectEvent | undefined> {
+    return db.query.eventTable.findFirst({
+      where: eq(eventTable.id, id),
+    });
+  }
+  async update(
+    id: string,
+    data: Partial<Omit<SelectEvent, "id">>,
+  ): Promise<void> {
+    await db.update(eventTable).set(data).where(eq(eventTable.id, id));
+  }
 
-export async function updateEvent(
-  id: SelectEvent["id"],
-  data: Partial<Omit<SelectEvent, "id">>,
-) {
-  await db.update(eventTable).set(data).where(eq(eventTable.id, id));
-}
-
-export async function deleteEvent(id: SelectEvent["id"]) {
-  await db.delete(eventTable).where(eq(eventTable.id, id));
-}
-
-export async function publishEvent(id: SelectEvent["id"]) {
-  await db
-    .update(eventTable)
-    .set({
-      status: "published",
-    })
-    .where(eq(eventTable.id, id));
-}
-
-export async function getPublishedEvents(): Promise<Array<SelectEvent>> {
-  return db.query.eventTable.findMany({
-    where: eq(eventTable.status, "published"),
-  });
+  async delete(id: string): Promise<void> {
+    await db.delete(eventTable).where(eq(eventTable.id, id));
+  }
 }
 
 type registerUsertoEventProps = {

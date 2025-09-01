@@ -2,22 +2,18 @@
 
 import { type SelectEvent, type SelectUser } from "@/db/schema";
 import {
-  createEvent,
-  deleteEvent,
-  getEventById,
-  getEvents,
-  getPublishedEvents,
-  publishEvent,
+  EventRepository,
   registerUserToEvent,
-  updateEvent,
 } from "../repository/event-repository";
 
 export async function eventList() {
-  return await getEvents();
+  const eventRepository = new EventRepository();
+  return await eventRepository.findMany({});
 }
 
 export async function eventById(id: string) {
-  return await getEventById(id);
+  const eventRepository = new EventRepository();
+  return await eventRepository.findById(id);
 }
 
 export async function eventCreate({
@@ -29,7 +25,8 @@ export async function eventCreate({
   description: string;
   event_date: Date;
 }) {
-  await createEvent({
+  const eventRepository = new EventRepository();
+  await eventRepository.save({
     name,
     description,
     event_date,
@@ -47,23 +44,25 @@ export async function eventUpdate({
   description: string | undefined;
   event_date: Date | undefined;
 }) {
-  await updateEvent(id, {
-    name,
-    description,
-    event_date,
-  });
+  const eventRepository = new EventRepository();
+  await eventRepository.update(id, { name, description, event_date });
 }
 
 export async function eventDelete(id: string) {
-  await deleteEvent(id);
+  const eventRepository = new EventRepository();
+  await eventRepository.delete(id);
 }
 
 export async function eventPublish({ eventId }: { eventId: string }) {
-  await publishEvent(eventId);
+  const eventRepository = new EventRepository();
+  await eventRepository.update(eventId, {
+    status: "published",
+  });
 }
 
 export async function eventPublishedList() {
-  return await getPublishedEvents();
+  const eventRepository = new EventRepository();
+  return await eventRepository.findMany({ status: "published" });
 }
 
 export async function attendEvent(
