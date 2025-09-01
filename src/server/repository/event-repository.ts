@@ -1,6 +1,9 @@
 import { db } from "@/db";
 import {
   eventTable,
+  lifeGroupTable,
+  locationTable,
+  user,
   usersToEvents,
   type InsertEvent,
   type SelectEvent,
@@ -42,6 +45,25 @@ export class EventRepository
       where: eq(eventTable.id, id),
     });
   }
+
+  async findParticipants(id: SelectEvent["id"]) {
+    const participants = db
+      .select({
+        user_name: user.name,
+        user_id: user.id,
+        life_group: lifeGroupTable.name,
+        location: locationTable.name,
+        driving: usersToEvents.driving,
+      })
+      .from(usersToEvents)
+      .where(eq(usersToEvents.event_id, id))
+      .innerJoin(user, eq(user.id, usersToEvents.user_id))
+      .innerJoin(locationTable, eq(usersToEvents.location_id, locationTable.id))
+      .innerJoin(lifeGroupTable, eq(user.life_group_id, lifeGroupTable.id));
+
+    return participants;
+  }
+
   async update(
     id: string,
     data: Partial<Omit<SelectEvent, "id">>,

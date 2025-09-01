@@ -82,3 +82,8 @@ export async function attendEvent(
     console.error(err);
   }
 }
+
+export async function eventParticipants(id: SelectEvent["id"]) {
+  const eventRepository = new EventRepository();
+  return await eventRepository.findParticipants(id);
+}
