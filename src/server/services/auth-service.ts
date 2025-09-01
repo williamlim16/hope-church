@@ -1,9 +1,6 @@
 "use server";
 import { auth } from "@/server/lib/auth";
-import {
-  getLifeGroupByVoucher,
-  LifeGroupRepository,
-} from "../repository/life-group-repository";
+import { LifeGroupRepository } from "../repository/life-group-repository";
 import { updateUserLifeGroup } from "../repository/user-repository";
 import { APIError } from "better-auth/api";
 
