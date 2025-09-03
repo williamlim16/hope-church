@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { type NullishEvent } from "@/db/schema";
 import { eventById, eventParticipants } from "@/server/services/event-service";
 import { columns } from "./participant-columns";
+import { MapDisplay } from "./map-display";
 
 export default async function Page({
   params,
@@ -46,6 +47,11 @@ export default async function Page({
       <div className="pt-10">
         <LayoutHeader>Event Participant</LayoutHeader>
         {participants && <DataTable data={participants} columns={columns} />}
+      </div>
+
+      <Separator />
+      <div className="h-[1000px] pt-10">
+        <MapDisplay />
       </div>
     </Layout>
   );
